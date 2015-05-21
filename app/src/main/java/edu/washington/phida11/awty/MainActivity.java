@@ -52,6 +52,7 @@ public class MainActivity extends ActionBarActivity {
                         }
                         if (time > 0) {
 
+
                             button.setText("Stop");
                             //Log.i("wtf", message.getText().toString());
                             //Log.i("wtf", number.getText().toString());
@@ -66,6 +67,9 @@ public class MainActivity extends ActionBarActivity {
                             alarmIntent = PendingIntent.getBroadcast(MainActivity.this, 0, i, 0);
 
                             am.setRepeating(AlarmManager.RTC, System.currentTimeMillis() + time * 60000, time * 60000, alarmIntent);
+                            
+
+
                         }
                     }
                 } else {
