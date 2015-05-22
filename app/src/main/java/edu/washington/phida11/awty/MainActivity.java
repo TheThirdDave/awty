@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,12 +21,7 @@ import android.widget.Toast;
 public class MainActivity extends ActionBarActivity {
     private PendingIntent alarmIntent = null;
     private AlarmManager am;
-    private BroadcastReceiver alarmReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Toast.makeText(MainActivity.this, "(425) 555-1212: Are we there yet?", Toast.LENGTH_SHORT).show();
-        }
-    };
+    private BroadcastReceiver alarmReceiver;
 
 
     @Override
@@ -38,6 +34,24 @@ public class MainActivity extends ActionBarActivity {
         final EditText message = (EditText) findViewById(R.id.editMessage);
         final EditText number = (EditText) findViewById(R.id.editNumber);
         final EditText timeBetween = (EditText) findViewById(R.id.editTimeBetween);
+
+        alarmReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                try {
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(number.getText().toString(), null, message.getText().toString(), null, null);
+                    Toast.makeText(getApplicationContext(), "SMS Sent!",
+                            Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(),
+                            "SMS faild, please try again later!",
+                            Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
+            }
+        };
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
